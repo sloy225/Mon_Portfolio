@@ -61,7 +61,7 @@ const drawRoundRect = (
 export const InteractiveDataGraph: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const [, setActiveNode] = useState<string | null>("CrewAI Agents");
+  const [activeNode, setActiveNode] = useState<string | null>("CrewAI Agents");
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -87,31 +87,45 @@ export const InteractiveDataGraph: React.FC = () => {
     resize();
     window.addEventListener('resize', resize);
 
-    // Named core nodes
+    // Named core nodes — Enrichis & Spécifiques
     const nodeData: Array<{ label: string; type: Node['type']; color: string }> = [
-      { label: "Power BI (RLS)", type: "bi", color: "#00F0FF" },
-      { label: "DAX Measures", type: "bi", color: "#38BDF8" },
-      { label: "Kimball Star Schema", type: "data", color: "#00F0FF" },
+      // Business Intelligence & Power BI
+      { label: "Power BI (RLS & Service)", type: "bi", color: "#00F0FF" },
+      { label: "DAX Measures & Power Query", type: "bi", color: "#38BDF8" },
+      { label: "Kimball Star Schema", type: "bi", color: "#00F0FF" },
+      { label: "Time-to-Reporting (24h->1h)", type: "bi", color: "#34D399" },
+
+      // Data Engineering & Cloud Architecture
       { label: "GCP BigQuery", type: "cloud", color: "#3B82F6" },
-      { label: "Microsoft Azure", type: "cloud", color: "#60A5FA" },
-      { label: "SQL Advanced Tuning", type: "data", color: "#22D3EE" },
-      { label: "CrewAI Agents", type: "ai", color: "#8B5CF6" },
-      { label: "Vector DB (RAG)", type: "ai", color: "#A855F7" },
-      { label: "LangChain Engine", type: "ai", color: "#6366F1" },
-      { label: "FastAPI Services", type: "ai", color: "#C084FC" },
-      { label: "Python Ingestion", type: "data", color: "#3B82F6" },
-      { label: "Data Quality MCO", type: "data", color: "#10B981" },
+      { label: "Microsoft Azure ADLS", type: "cloud", color: "#60A5FA" },
+      { label: "SQL Advanced & Windowing", type: "data", color: "#22D3EE" },
+      { label: "Data Fabric & Lakehouse", type: "data", color: "#0284C7" },
+      { label: "Python Pandas & Pipelines", type: "data", color: "#3B82F6" },
+      { label: "PostgreSQL & MERISE", type: "data", color: "#38BDF8" },
+
+      // GenAI & Multi-Agent Systems
+      { label: "CrewAI Multi-Agents", type: "ai", color: "#8B5CF6" },
+      { label: "Vector DB & RAG Pipelines", type: "ai", color: "#A855F7" },
+      { label: "LangChain Orchestration", type: "ai", color: "#6366F1" },
+      { label: "FastAPI REST Services", type: "ai", color: "#C084FC" },
+      { label: "LLM Document Processing", type: "ai", color: "#E879F9" },
+
+      // Gouvernance, Agilité & MCO Grand Compte
+      { label: "SAFe & Agile Framework", type: "data", color: "#F59E0B" },
+      { label: "Data Quality & MDM", type: "data", color: "#10B981" },
+      { label: "MCO & Support Applicatif", type: "data", color: "#059669" },
+      { label: "Pilotage Financier & Flux", type: "bi", color: "#FBBF24" },
     ];
 
     // Generate nodes in 3D sphere
     const nodes: Node[] = [];
-    const nodeCount = 28;
+    const nodeCount = Math.max(28, nodeData.length);
     const radius = Math.max(100, Math.min(width, height) * 0.42);
 
     for (let i = 0; i < nodeCount; i++) {
       const phi = Math.acos(-1 + (2 * i) / nodeCount);
       const theta = Math.sqrt(nodeCount * Math.PI) * phi;
-      
+
       const named = nodeData[i];
       const isNamed = !!named;
 
@@ -161,14 +175,12 @@ export const InteractiveDataGraph: React.FC = () => {
     let angleY = 0.0025;
     let targetAngleX = 0.0015;
     let targetAngleY = 0.0025;
-    let mouseX = 0;
-    let mouseY = 0;
 
     const handleMouseMove = (e: MouseEvent) => {
       if (!containerRef.current) return;
       const rect = containerRef.current.getBoundingClientRect();
-      mouseX = (e.clientX - rect.left - width / 2) / (width / 2 || 1);
-      mouseY = (e.clientY - rect.top - height / 2) / (height / 2 || 1);
+      const mouseX = (e.clientX - rect.left - width / 2) / (width / 2 || 1);
+      const mouseY = (e.clientY - rect.top - height / 2) / (height / 2 || 1);
       targetAngleY = mouseX * 0.008;
       targetAngleX = -mouseY * 0.008;
     };
@@ -305,11 +317,11 @@ export const InteractiveDataGraph: React.FC = () => {
             const fontSize = Math.max(10, Math.round(11 * scale));
             ctx.font = `600 ${fontSize}px "JetBrains Mono", monospace`;
             ctx.textAlign = 'left';
-            
+
             const textWidth = ctx.measureText(node.label).width;
             const padX = 6;
             const padY = 3;
-            
+
             ctx.fillStyle = 'rgba(9, 13, 22, 0.85)';
             ctx.strokeStyle = 'rgba(0, 240, 255, 0.3)';
             ctx.lineWidth = 1;
@@ -342,7 +354,7 @@ export const InteractiveDataGraph: React.FC = () => {
   }, []);
 
   return (
-    <div 
+    <div
       ref={containerRef}
       className="relative w-full h-[460px] md:h-[540px] lg:h-[580px] rounded-2xl glass-card overflow-hidden gradient-border-glow group select-none"
     >
@@ -354,8 +366,8 @@ export const InteractiveDataGraph: React.FC = () => {
       <div className="absolute inset-0 bg-grid-pattern opacity-40 pointer-events-none" />
 
       {/* Interactive 3D Canvas */}
-      <canvas 
-        ref={canvasRef} 
+      <canvas
+        ref={canvasRef}
         className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing"
       />
 
@@ -384,7 +396,7 @@ export const InteractiveDataGraph: React.FC = () => {
           </div>
           <div className="text-xs font-mono">
             <div className="text-white font-medium flex items-center gap-1.5">
-              <span>Graphe de Connaissances & Pipelines</span>
+              <span>Graphe de Connaissances & Pipelines ({activeNode || 'Actif'})</span>
               <Sparkles className="w-3 h-3 text-cyan-400" />
             </div>
             <div className="text-gray-400">Interagissez avec le curseur pour explorer la 3D</div>
@@ -392,19 +404,19 @@ export const InteractiveDataGraph: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-1.5 text-[11px] font-mono pointer-events-auto">
-          <button 
+          <button
             onClick={() => setActiveNode("CrewAI Agents")}
             className="px-2.5 py-1 rounded bg-purple-500/10 border border-purple-500/30 text-purple-300 hover:bg-purple-500/20 transition-colors"
           >
             CrewAI / RAG
           </button>
-          <button 
+          <button
             onClick={() => setActiveNode("Power BI (RLS)")}
             className="px-2.5 py-1 rounded bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 hover:bg-cyan-500/20 transition-colors"
           >
             Power BI / DAX
           </button>
-          <button 
+          <button
             onClick={() => setActiveNode("GCP BigQuery")}
             className="px-2.5 py-1 rounded bg-blue-500/10 border border-blue-500/30 text-blue-300 hover:bg-blue-500/20 transition-colors"
           >

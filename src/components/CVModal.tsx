@@ -13,9 +13,17 @@ import {
   Award,
   Briefcase,
   GraduationCap,
-  ExternalLink
+  ExternalLink,
+  Zap,
+  Check,
+  Sparkles,
+  Layers,
+  ChevronDown,
+  ChevronUp,
+  FileText
 } from 'lucide-react';
-import { PERSONAL_INFO, EXPERIENCES, EDUCATION_ITEMS } from '../data/portfolioData';
+import { PERSONAL_INFO, EXPERIENCES, EDUCATION_ITEMS, SKILL_GROUPS } from '../data/portfolioData';
+import { QuantixLogo } from './QuantixLogo';
 
 interface CVModalProps {
   isOpen: boolean;
@@ -23,7 +31,9 @@ interface CVModalProps {
 }
 
 export const CVModal: React.FC<CVModalProps> = ({ isOpen, onClose }) => {
+  const [activeTab, setActiveTab] = useState<'interactive' | 'skills' | 'printable'>('interactive');
   const [copied, setCopied] = useState<string | null>(null);
+  const [expandedExp, setExpandedExp] = useState<string | null>('sncf-alcyon');
 
   if (!isOpen) return null;
 
@@ -38,32 +48,82 @@ export const CVModal: React.FC<CVModalProps> = ({ isOpen, onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/85 backdrop-blur-md animate-in fade-in duration-200">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/80 backdrop-blur-md animate-in fade-in duration-200"
+      onClick={onClose}
+    >
+      {/* Modal Container */}
+      <div
+        className="relative w-full max-w-4xl max-h-[92vh] overflow-y-auto rounded-3xl bg-[#0B111D] border border-slate-700/80 shadow-2xl text-slate-200 flex flex-col no-scrollbar"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Sticky Header with Mode Switcher & Actions */}
+        <div className="sticky top-0 z-30 flex flex-wrap items-center justify-between gap-3 p-4 sm:px-8 bg-[#090D16]/95 backdrop-blur-xl border-b border-white/10">
 
-      {/* Container */}
-      <div className="relative w-full max-w-4xl max-h-[92vh] overflow-y-auto rounded-3xl bg-dark-900 border border-cyan-400/40 shadow-2xl text-gray-200">
-
-        {/* Sticky Header with Actions */}
-        <div className="sticky top-0 z-20 flex items-center justify-between p-4 sm:px-8 bg-dark-950/90 backdrop-blur-xl border-b border-white/10">
-          <div className="flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="text-xs font-mono font-semibold text-white">
-              CURRICULUM VITAE · ABDOUL-AZIZ OUEDRAOGO
-            </span>
+          {/* Logo & Status */}
+          <div className="flex items-center gap-2.5">
+            <QuantixLogo size={24} className="text-white" />
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="text-xs sm:text-sm font-bold text-white tracking-tight">
+                  CURRICULUM VITAE · AO
+                </span>
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/25">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  Disponible ASAP
+                </span>
+              </div>
+              <span className="text-[10px] text-slate-400 font-mono hidden sm:block">
+                Abdoul-Aziz OUEDRAOGO · MSc Big Data & IA (Mention Très Bien 19,25/20)
+              </span>
+            </div>
           </div>
 
+          {/* Tab Selector */}
+          <div className="flex items-center gap-1 p-1 rounded-xl bg-white/[0.04] border border-white/[0.08] text-xs">
+            <button
+              onClick={() => setActiveTab('interactive')}
+              className={`px-3 py-1 rounded-lg font-medium transition-all ${activeTab === 'interactive'
+                  ? 'bg-white text-slate-950 font-semibold shadow-sm'
+                  : 'text-slate-400 hover:text-white'
+                }`}
+            >
+              Expériences & Parcours
+            </button>
+            <button
+              onClick={() => setActiveTab('skills')}
+              className={`px-3 py-1 rounded-lg font-medium transition-all ${activeTab === 'skills'
+                  ? 'bg-white text-slate-950 font-semibold shadow-sm'
+                  : 'text-slate-400 hover:text-white'
+                }`}
+            >
+              Compétences Détaillées
+            </button>
+            <button
+              onClick={() => setActiveTab('printable')}
+              className={`px-3 py-1 rounded-lg font-medium transition-all ${activeTab === 'printable'
+                  ? 'bg-white text-slate-950 font-semibold shadow-sm'
+                  : 'text-slate-400 hover:text-white'
+                }`}
+            >
+              Vue Synthétique A4
+            </button>
+          </div>
+
+          {/* Action Buttons */}
           <div className="flex items-center gap-2">
             <button
               onClick={handlePrint}
-              className="px-3 py-1.5 rounded-xl text-xs font-medium bg-white/[0.05] hover:bg-white/[0.1] text-gray-300 border border-white/10 transition-colors flex items-center gap-1.5"
+              className="px-3 py-1.5 rounded-xl text-xs font-medium bg-white/[0.06] hover:bg-white/[0.12] text-slate-300 border border-white/10 transition-colors flex items-center gap-1.5"
+              title="Imprimer ou enregistrer au format PDF"
             >
               <Printer className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">Imprimer / PDF</span>
             </button>
 
             <a
-              href={`mailto:${PERSONAL_INFO.email}?subject=Recrutement%20/%20Mission%20Data%20-%20Abdoul-Aziz%20Ouedraogo`}
-              className="px-3 py-1.5 rounded-xl text-xs font-bold text-black bg-cyan-400 hover:bg-cyan-300 transition-colors flex items-center gap-1.5 shadow-glow-cyan/20"
+              href={`mailto:${PERSONAL_INFO.email}?subject=Recrutement%20/%20Mission%20Data%20-%20Entretien%20Abdoul-Aziz`}
+              className="px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-950 bg-white hover:bg-slate-200 transition-colors flex items-center gap-1.5 shadow-sm"
             >
               <Mail className="w-3.5 h-3.5" />
               <span>Contacter</span>
@@ -71,194 +131,349 @@ export const CVModal: React.FC<CVModalProps> = ({ isOpen, onClose }) => {
 
             <button
               onClick={onClose}
-              className="p-1.5 rounded-xl text-gray-400 hover:text-white hover:bg-white/10 transition-colors ml-2"
-              aria-label="Fermer"
+              className="p-1.5 rounded-xl text-slate-400 hover:text-white hover:bg-white/10 transition-colors ml-1"
+              aria-label="Fermer le CV"
             >
               <X className="w-5 h-5" />
             </button>
           </div>
         </div>
 
-        {/* CV Printable & Readable Body */}
-        <div className="p-6 sm:p-10 space-y-8">
+        {/* Modal Body */}
+        <div className="p-6 sm:p-8 space-y-6">
 
-          {/* Top Header Card */}
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-white/10">
+          {/* Header Identity Card */}
+          <div className="p-6 rounded-3xl bg-slate-900/60 border border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div>
-              <div className="flex items-center gap-2 mb-1">
-                <h1 className="text-2xl sm:text-3xl font-extrabold text-white">
-                  Abdoul-Aziz OUEDRAOGO
+              <div className="flex items-center gap-2 mb-1.5">
+                <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+                  {PERSONAL_INFO.name}
                 </h1>
-                <span className="px-2.5 py-0.5 rounded-full text-[11px] font-mono bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
-                  Disponible ASAP
+                <span className="px-2.5 py-0.5 rounded-full text-[11px] font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/25">
+                  Écoute CDI & Conseil
                 </span>
               </div>
-              <h2 className="text-sm sm:text-base font-semibold text-cyan-400 font-mono">
-                Consultant Data Analyst & Analytics Engineer | Specialist Power BI, SQL & GenAI
+              <h2 className="text-sm sm:text-base font-semibold text-slate-300 font-mono">
+                {PERSONAL_INFO.title}
               </h2>
-              <p className="text-xs text-gray-400 mt-1">
-                Major  Mastere Big Data & IA (19,25/20) · 3 ans d'expérience en grand compte (SNCF Réseau)
+              <p className="text-xs text-slate-400 mt-1">
+                {PERSONAL_INFO.subtitle}
               </p>
             </div>
 
-            {/* Quick Contact info badges */}
-            <div className="flex flex-col gap-1.5 text-xs font-mono">
-              <div className="flex items-center gap-2 text-gray-300">
-                <MapPin className="w-3.5 h-3.5 text-cyan-400" />
-                <span>{PERSONAL_INFO.location} · {PERSONAL_INFO.license}</span>
+            {/* Quick Contact & Copy pills */}
+            <div className="flex flex-wrap md:flex-col gap-2 text-xs font-mono">
+              <div className="flex items-center gap-2 text-slate-300 bg-white/[0.03] px-3 py-1.5 rounded-xl border border-white/[0.06]">
+                <MapPin className="w-3.5 h-3.5 text-slate-400" />
+                <span>{PERSONAL_INFO.location}</span>
               </div>
 
-              <div className="flex items-center gap-2 text-gray-300 group">
-                <Mail className="w-3.5 h-3.5 text-cyan-400" />
-                <a href={`mailto:${PERSONAL_INFO.email}`} className="hover:text-cyan-400 underline">
+              <div className="flex items-center gap-2 text-slate-300 bg-white/[0.03] px-3 py-1.5 rounded-xl border border-white/[0.06]">
+                <Mail className="w-3.5 h-3.5 text-slate-400" />
+                <a href={`mailto:${PERSONAL_INFO.email}`} className="hover:text-white underline">
                   {PERSONAL_INFO.email}
                 </a>
                 <button
                   onClick={() => handleCopy(PERSONAL_INFO.email, 'email')}
-                  className="text-gray-500 hover:text-white"
-                  title="Copier l'email"
+                  className="ml-auto text-slate-500 hover:text-white"
+                  title="Copier l'adresse email"
                 >
-                  {copied === 'email' ? <CheckCircle className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
+                  {copied === 'email' ? <CheckCircle className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
                 </button>
               </div>
 
-              <div className="flex items-center gap-2 text-gray-300">
-                <Phone className="w-3.5 h-3.5 text-cyan-400" />
-                <a href={`tel:${PERSONAL_INFO.phone}`} className="hover:text-cyan-400">
+              <div className="flex items-center gap-2 text-slate-300 bg-white/[0.03] px-3 py-1.5 rounded-xl border border-white/[0.06]">
+                <Phone className="w-3.5 h-3.5 text-slate-400" />
+                <a href={`tel:${PERSONAL_INFO.phone}`} className="hover:text-white">
                   {PERSONAL_INFO.phoneFormatted}
                 </a>
                 <button
                   onClick={() => handleCopy(PERSONAL_INFO.phone, 'phone')}
-                  className="text-gray-500 hover:text-white"
-                  title="Copier le numéro"
+                  className="ml-auto text-slate-500 hover:text-white"
+                  title="Copier le numéro de téléphone"
                 >
-                  {copied === 'phone' ? <CheckCircle className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
+                  {copied === 'phone' ? <CheckCircle className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
                 </button>
               </div>
-
-              <div className="flex items-center gap-3 pt-1">
-                <a href={PERSONAL_INFO.linkedin} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-cyan-400 flex items-center gap-1">
-                  <Linkedin className="w-3.5 h-3.5" />
-                  <span>LinkedIn</span>
-                </a>
-                <span className="text-gray-600">·</span>
-                <a href={PERSONAL_INFO.github} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white flex items-center gap-1">
-                  <Github className="w-3.5 h-3.5" />
-                  <span>GitHub</span>
-                </a>
-              </div>
             </div>
           </div>
 
-          {/* Profile Summary */}
-          <div>
-            <h3 className="text-xs font-mono font-bold text-cyan-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-              <Briefcase className="w-4 h-4" />
-              <span>SYNTHÈSE DU PROFIL</span>
-            </h3>
-            <p className="text-xs sm:text-sm text-gray-300 leading-relaxed bg-white/[0.02] p-4 rounded-2xl border border-white/5">
-              Consultant Data & Analytics Engineer spécialisé dans la conception et l'industrialisation de solutions data de bout-en-bout.
-              Solide expertise acquise durant 3 ans de prestation chez <strong>SNCF Réseau</strong> sur la modélisation dimensionnelle (Kimball),
-              le développement de dashboards décisionnels <strong>Power BI (DAX, RLS)</strong> et l'optimisation de requêtes <strong>SQL (BigQuery, Azure)</strong>,
-              ayant permis de diviser les temps de traitement de <strong>24h à 1h</strong>. Maîtrise des architectures modernes d'<strong>IA Générative (Agents CrewAI, RAG, Vector DB)</strong>
-              pour automatiser l'analyse de flux documentaires complexes.
-            </p>
-          </div>
+          {/* TAB 1: Expériences & Parcours Interactifs */}
+          {activeTab === 'interactive' && (
+            <div className="space-y-6 animate-in fade-in duration-150">
 
-          {/* Professional Experience */}
-          <div>
-            <h3 className="text-xs font-mono font-bold text-cyan-400 uppercase tracking-wider mb-3 flex items-center gap-1.5">
-              <Briefcase className="w-4 h-4" />
-              <span>EXPÉRIENCES PROFESSIONNELLES</span>
-            </h3>
+              {/* Synthèse Métier */}
+              <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/[0.06]">
+                <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-slate-400 mb-2 flex items-center gap-1.5">
+                  <Briefcase className="w-4 h-4 text-white" />
+                  <span>Synthèse Opérationnelle & Valeur Ajoutée</span>
+                </h3>
+                <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-normal">
+                  Consultant Data & Analytics Engineer spécialisé dans la conception et l'industrialisation de solutions data de bout-en-bout.
+                  Solide expertise de <strong>3 ans en mission Grand Compte chez SNCF Réseau</strong> sur la modélisation dimensionnelle (Kimball),
+                  le développement de tableaux de bord décisionnels <strong>Power BI (DAX, RLS)</strong> et l'optimisation de requêtes <strong>SQL (BigQuery, Azure)</strong>,
+                  ayant permis de diviser les temps de traitement de <strong>24h à 1h (-96%)</strong>.
+                  Maîtrise opérationnelle des architectures modernes d'<strong>IA Générative (Agents CrewAI, RAG, FAISS, Vector DB)</strong> pour automatiser les tâches documentaires.
+                </p>
+              </div>
 
-            <div className="space-y-4">
-              {EXPERIENCES.map((exp) => (
-                <div key={exp.id} className="p-4 rounded-2xl bg-white/[0.02] border border-white/5">
-                  <div className="flex flex-wrap items-center justify-between gap-1 mb-1">
-                    <span className="font-bold text-white text-sm sm:text-base">
-                      {exp.role} — <span className="text-cyan-400">{exp.company}</span>
-                      {exp.client && ` (${exp.client})`}
-                    </span>
-                    <span className="text-xs font-mono text-gray-400">{exp.period}</span>
-                  </div>
+              {/* Expériences Accordion */}
+              <div>
+                <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-slate-400 mb-3 flex items-center justify-between">
+                  <span className="flex items-center gap-1.5">
+                    <Layers className="w-4 h-4 text-white" />
+                    <span>Expériences Professionnelles Récentes</span>
+                  </span>
+                  <span className="text-[11px] font-normal text-slate-500">
+                    Cliquer sur une mission pour déplier les réalisations
+                  </span>
+                </h3>
 
-                  {exp.impactMetric && (
-                    <div className="text-xs font-mono text-emerald-400 mb-2">
-                      ⚡ Impact : {exp.impactMetric}
+                <div className="space-y-3">
+                  {EXPERIENCES.map((exp) => {
+                    const isExpanded = expandedExp === exp.id;
+                    return (
+                      <div
+                        key={exp.id}
+                        className={`rounded-2xl border transition-all duration-200 overflow-hidden ${isExpanded
+                            ? 'bg-slate-900/90 border-slate-700 shadow-lg'
+                            : 'bg-white/[0.02] border-white/[0.06] hover:border-white/10'
+                          }`}
+                      >
+                        {/* Header clickable */}
+                        <div
+                          onClick={() => setExpandedExp(isExpanded ? null : exp.id)}
+                          className="p-5 cursor-pointer flex items-start justify-between gap-4"
+                        >
+                          <div>
+                            <div className="flex flex-wrap items-center gap-2 mb-1">
+                              <h4 className="font-bold text-white text-sm sm:text-base">
+                                {exp.role}
+                              </h4>
+                              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono bg-white/10 text-slate-300">
+                                {exp.company} {exp.client && `· ${exp.client}`}
+                              </span>
+                            </div>
+
+                            <p className="text-xs text-slate-400 font-mono">
+                              {exp.period} · {exp.location}
+                            </p>
+                          </div>
+
+                          <div className="flex items-center gap-3 shrink-0">
+                            {exp.impactMetric && (
+                              <span className="hidden sm:inline-flex items-center gap-1 text-xs font-mono text-emerald-400 font-semibold bg-emerald-500/10 px-2.5 py-1 rounded-lg border border-emerald-500/20">
+                                <Zap className="w-3.5 h-3.5" />
+                                {exp.impactMetric}
+                              </span>
+                            )}
+                            <button
+                              className="p-1 rounded-lg bg-white/5 text-slate-400"
+                              aria-label="Toggle details"
+                            >
+                              {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* Expanded details */}
+                        {isExpanded && (
+                          <div className="px-5 pb-5 pt-1 border-t border-white/[0.06] animate-in fade-in duration-150">
+                            <p className="text-xs sm:text-sm text-slate-300 mb-3 font-normal leading-relaxed">
+                              {exp.description}
+                            </p>
+
+                            <div className="space-y-2 mb-4">
+                              <span className="text-[11px] font-mono uppercase tracking-wider text-slate-400 block">
+                                Réalisations & Responsabilités Clés :
+                              </span>
+                              {exp.highlights.map((h, i) => (
+                                <div key={i} className="flex items-start gap-2 text-xs text-slate-300 leading-relaxed">
+                                  <Check className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
+                                  <span>{h}</span>
+                                </div>
+                              ))}
+                            </div>
+
+                            <div className="flex flex-wrap gap-1.5 pt-3 border-t border-white/[0.04]">
+                              {exp.technologies.map((t) => (
+                                <span key={t} className="text-[10px] font-mono px-2 py-0.5 rounded bg-white/5 text-slate-300 border border-white/10">
+                                  {t}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Formations & Diplômes */}
+              <div>
+                <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-1.5">
+                  <GraduationCap className="w-4 h-4 text-white" />
+                  <span>Formation Académique</span>
+                </h3>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {EDUCATION_ITEMS.map((edu, idx) => (
+                    <div key={idx} className="p-4 rounded-2xl bg-white/[0.02] border border-white/[0.06] flex flex-col justify-between">
+                      <div>
+                        <div className="flex items-center justify-between gap-2 mb-1">
+                          <span className="font-bold text-white text-xs sm:text-sm">{edu.degree}</span>
+                          <span className="text-xs font-mono text-emerald-400 font-semibold">{edu.period}</span>
+                        </div>
+                        <div className="text-xs text-slate-300 font-medium">{edu.institution}</div>
+                      </div>
+                      <p className="text-[11px] text-slate-400 mt-2 font-normal leading-relaxed">
+                        {edu.details}
+                      </p>
                     </div>
-                  )}
-
-                  <ul className="space-y-1.5 text-xs text-gray-300 list-disc list-inside">
-                    {exp.highlights.slice(0, 4).map((h, i) => (
-                      <li key={i} className="leading-relaxed">{h}</li>
-                    ))}
-                  </ul>
-
-                  <div className="flex flex-wrap gap-1.5 mt-3 pt-2 border-t border-white/5">
-                    {exp.technologies.slice(0, 7).map((t) => (
-                      <span key={t} className="text-[10px] font-mono px-2 py-0.5 rounded bg-white/[0.03] text-gray-300 border border-white/5">
-                        {t}
-                      </span>
-                    ))}
-                  </div>
+                  ))}
                 </div>
-              ))}
+              </div>
+
             </div>
-          </div>
+          )}
 
-          {/* Education */}
-          <div>
-            <h3 className="text-xs font-mono font-bold text-cyan-400 uppercase tracking-wider mb-3 flex items-center gap-1.5">
-              <GraduationCap className="w-4 h-4" />
-              <span>FORMATION & EXCELLENCE ACADÉMIQUE</span>
-            </h3>
+          {/* TAB 2: Compétences Détaillées */}
+          {activeTab === 'skills' && (
+            <div className="space-y-4 animate-in fade-in duration-150">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {SKILL_GROUPS.map((group, idx) => (
+                  <div key={idx} className="p-5 rounded-2xl bg-slate-900/60 border border-slate-800 flex flex-col justify-between">
+                    <div>
+                      <div className="flex items-center gap-2 mb-1">
+                        <Award className="w-4 h-4 text-white" />
+                        <h4 className="font-bold text-white text-sm">
+                          {group.category}
+                        </h4>
+                      </div>
+                      <p className="text-xs text-slate-400 mb-4 leading-relaxed font-normal">
+                        {group.description}
+                      </p>
+                    </div>
 
-            <div className="space-y-3">
-              {EDUCATION_ITEMS.map((edu, idx) => (
-                <div key={idx} className="p-4 rounded-2xl bg-white/[0.02] border border-white/5">
-                  <div className="flex flex-wrap items-center justify-between gap-1">
-                    <span className="font-bold text-white text-sm">{edu.degree}</span>
-                    <span className="text-xs font-mono text-cyan-400 font-semibold">{edu.period}</span>
+                    <div className="space-y-2 pt-2 border-t border-white/[0.06]">
+                      {group.skills.map((skill, sIdx) => (
+                        <div key={sIdx} className="flex items-center justify-between text-xs">
+                          <span className="text-slate-300 font-medium">
+                            {skill.name}
+                          </span>
+                          <span className={`text-[10px] font-mono px-2 py-0.5 rounded ${skill.highlight
+                              ? 'bg-emerald-500/10 text-emerald-400 font-semibold border border-emerald-500/20'
+                              : 'bg-white/5 text-slate-400'
+                            }`}>
+                            {skill.level}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                  <div className="text-xs text-gray-300 font-medium mt-0.5">{edu.institution}</div>
-                  <div className="text-xs text-gray-400 mt-1">{edu.details}</div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* TAB 3: Vue Synthétique A4 (ATS & Print Friendly) */}
+          {activeTab === 'printable' && (
+            <div className="p-8 rounded-2xl bg-white text-zinc-900 shadow-xl border border-zinc-200 animate-in fade-in duration-150 space-y-6">
+
+              {/* Header A4 */}
+              <div className="border-b border-zinc-200 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                  <h2 className="text-2xl font-bold text-zinc-950">
+                    {PERSONAL_INFO.name}
+                  </h2>
+                  <p className="text-xs font-semibold uppercase tracking-wider text-zinc-600 mt-0.5">
+                    {PERSONAL_INFO.title}
+                  </p>
+                  <p className="text-[11px] text-zinc-500 font-mono mt-1">
+                    Major MSc Big Data & IA (19,25/20) · 3 ans en Prestation Grand Compte (SNCF Réseau)
+                  </p>
                 </div>
-              ))}
-            </div>
-          </div>
 
-          {/* Technical Skills Summary */}
-          <div>
-            <h3 className="text-xs font-mono font-bold text-cyan-400 uppercase tracking-wider mb-3 flex items-center gap-1.5">
-              <Award className="w-4 h-4" />
-              <span>COMPÉTENCES CLÉS</span>
-            </h3>
+                <div className="text-xs font-mono text-zinc-600 space-y-0.5 text-right sm:text-right">
+                  <div>{PERSONAL_INFO.email}</div>
+                  <div>{PERSONAL_INFO.phoneFormatted}</div>
+                  <div>{PERSONAL_INFO.location}</div>
+                  <div className="text-emerald-700 font-semibold">{PERSONAL_INFO.availability}</div>
+                </div>
+              </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-              <div className="p-3 rounded-xl bg-white/[0.02] border border-white/5">
-                <span className="font-bold text-white block mb-1">Analytics & Business Intelligence</span>
-                <span className="text-gray-300">Power BI (DAX, RLS, Power Query), Modélisation Kimball (Étoile/Flocon), Storytelling KPI, Tableau.</span>
+              {/* Synthèse */}
+              <div>
+                <h3 className="text-xs font-bold uppercase tracking-wider text-zinc-900 border-b border-zinc-200 pb-1 mb-2">
+                  Profil & Synthèse Opérationnelle
+                </h3>
+                <p className="text-xs text-zinc-700 leading-relaxed">
+                  Consultant Data & Analytics Engineer intervenant sur toute la chaîne de valeur décisionnelle : modélisation en étoile (Kimball), conception et sécurisation de tableaux de bord Power BI critiques (DAX, RLS), optimisation de pipelines SQL (GCP BigQuery / Azure) ayant permis de diviser les temps de traitement de 24h à 1h chez SNCF Réseau. Spécialiste des systèmes multi-agents GenAI (CrewAI, LangChain, RAG vectoriel FAISS).
+                </p>
               </div>
-              <div className="p-3 rounded-xl bg-white/[0.02] border border-white/5">
-                <span className="font-bold text-white block mb-1">Data Engineering & Cloud</span>
-                <span className="text-gray-300">SQL Avancé, GCP BigQuery, Microsoft Azure, Python (Pandas), PostgreSQL, Docker, Git.</span>
+
+              {/* Expériences */}
+              <div>
+                <h3 className="text-xs font-bold uppercase tracking-wider text-zinc-900 border-b border-zinc-200 pb-1 mb-3">
+                  Expériences Professionnelles
+                </h3>
+                <div className="space-y-4">
+                  {EXPERIENCES.map((exp) => (
+                    <div key={exp.id}>
+                      <div className="flex items-baseline justify-between text-xs font-bold text-zinc-900">
+                        <span>{exp.role} — {exp.company} {exp.client && `(${exp.client})`}</span>
+                        <span className="font-mono text-zinc-500 text-[11px]">{exp.period}</span>
+                      </div>
+                      <p className="text-[11px] text-emerald-700 font-mono font-semibold">
+                        Impact : {exp.impactMetric}
+                      </p>
+                      <ul className="list-disc list-inside text-[11px] text-zinc-700 space-y-1 mt-1 leading-relaxed">
+                        {exp.highlights.slice(0, 4).map((h, i) => (
+                          <li key={i}>{h}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
               </div>
-              <div className="p-3 rounded-xl bg-white/[0.02] border border-white/5">
-                <span className="font-bold text-white block mb-1">IA Générative & Machine Learning</span>
-                <span className="text-gray-300">Agents IA (CrewAI, LangChain), RAG, Vector Databases, FastAPI, Scikit-learn, LLM.</span>
+
+              {/* Formation */}
+              <div>
+                <h3 className="text-xs font-bold uppercase tracking-wider text-zinc-900 border-b border-zinc-200 pb-1 mb-2">
+                  Formation & Diplômes
+                </h3>
+                <div className="space-y-2 text-xs">
+                  {EDUCATION_ITEMS.map((edu, idx) => (
+                    <div key={idx} className="flex items-baseline justify-between">
+                      <div>
+                        <span className="font-bold text-zinc-900">{edu.degree}</span> — <span className="text-zinc-600">{edu.institution}</span>
+                      </div>
+                      <span className="font-mono text-zinc-500 text-[11px]">{edu.period}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
-              <div className="p-3 rounded-xl bg-white/[0.02] border border-white/5">
-                <span className="font-bold text-white block mb-1">Méthodes & Gestion de Projets</span>
-                <span className="text-gray-300">Cadre SAFe / Agile Scrum, Data Quality & Validation, Recueil de besoins, MCO, Conduite du changement.</span>
+
+              {/* Compétences Résumé */}
+              <div>
+                <h3 className="text-xs font-bold uppercase tracking-wider text-zinc-900 border-b border-zinc-200 pb-1 mb-2">
+                  Compétences Techniques & Environnements
+                </h3>
+                <div className="grid grid-cols-2 gap-2 text-[11px] text-zinc-700">
+                  <div><strong>BI & Décisionnel :</strong> Power BI (Desktop & Service), DAX Avancé, Kimball, RLS, Power Query.</div>
+                  <div><strong>Data & Cloud :</strong> SQL Avancé, GCP BigQuery, Microsoft Azure, Python, PostgreSQL, Docker.</div>
+                  <div><strong>IA Générative :</strong> Systèmes Multi-Agents (CrewAI, LangChain), RAG, FAISS, Ollama, FastAPI.</div>
+                  <div><strong>Méthodes :</strong> SAFe, Agile / Scrum, Data Quality, Recueil de besoin métier, Conduite du changement.</div>
+                </div>
               </div>
+
             </div>
-          </div>
+          )}
 
         </div>
 
       </div>
-
     </div>
   );
 };

@@ -6,96 +6,105 @@
   :root {
     color-scheme: dark;
   }
-  
+
   html {
     scroll-behavior: smooth;
   }
 
   body {
-    background-color: #090D16;
+    background-color: #080C14;
     color: #F3F4F6;
     font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   /* Custom scrollbar */
   ::-webkit-scrollbar {
-    width: 8px;
+    width: 6px;
   }
   ::-webkit-scrollbar-track {
-    background: #090D16;
+    background: #080C14;
   }
   ::-webkit-scrollbar-thumb {
     background: #1E293B;
-    border-radius: 4px;
-    border: 1px solid rgba(0, 240, 255, 0.15);
+    border-radius: 9999px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #00F0FF;
+    background: #334155;
   }
 }
 
 @layer utilities {
-  .glass-card {
-    background: rgba(255, 255, 255, 0.025);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.07);
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  /* Subtle Halftone Matrix Dot Pattern as seen in Quantix hero */
+  .bg-halftone-pattern {
+    background-image: radial-gradient(rgba(255, 255, 255, 0.12) 1px, transparent 1px);
+    background-size: 18px 18px;
   }
 
-  .glass-card-hover {
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .glass-card-hover:hover {
-    background: rgba(255, 255, 255, 0.045);
-    border-color: rgba(0, 240, 255, 0.3);
-    box-shadow: 0 10px 40px -10px rgba(0, 240, 255, 0.15);
-    transform: translateY(-3px);
+  .bg-halftone-dark {
+    background-image: radial-gradient(rgba(148, 163, 184, 0.15) 1px, transparent 1px);
+    background-size: 16px 16px;
   }
 
-  .glass-pill {
-    background: rgba(255, 255, 255, 0.04);
+  /* Subtle scanline effect for preloader & hero */
+  .bg-scanlines {
+    background: linear-gradient(
+      to bottom,
+      rgba(255,255,255,0),
+      rgba(255,255,255,0) 50%,
+      rgba(0, 0, 0, 0.25) 50%,
+      rgba(0, 0, 0, 0.25)
+    );
+    background-size: 100% 4px;
+  }
+
+  /* Clean dark frosted card */
+  .quantix-card-dark {
+    background: rgba(15, 23, 42, 0.65);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  /* Clean light frosted card */
+  .quantix-card-light {
+    background: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+  }
+
+  /* Sleek pill button as in the screenshots */
+  .quantix-pill-btn {
+    background: rgba(255, 255, 255, 0.08);
     backdrop-filter: blur(8px);
-    border: 1px solid rgba(255, 255, 255, 0.09);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .quantix-pill-btn:hover {
+    background: rgba(255, 255, 255, 0.16);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-1px);
   }
 
-  .text-gradient-cyan-blue {
-    background: linear-gradient(135deg, #00F0FF 0%, #3B82F6 50%, #6366F1 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+  /* Dark pill button */
+  .quantix-pill-btn-dark {
+    background: #0F172A;
+    color: #FFFFFF;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    transition: all 0.2s ease;
   }
+  .quantix-pill-btn-dark:hover {
+    background: #1E293B;
+    border-color: rgba(255, 255, 255, 0.25);
+  }
+}
 
-  .text-gradient-silver {
-    background: linear-gradient(180deg, #FFFFFF 0%, #94A3B8 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-
-  .gradient-border-glow {
-    position: relative;
-  }
-  .gradient-border-glow::before {
-    content: '';
-    position: absolute;
-    inset: -1px;
-    border-radius: inherit;
-    padding: 1px;
-    background: linear-gradient(135deg, rgba(0, 240, 255, 0.5), rgba(99, 102, 241, 0.2), transparent 70%);
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    pointer-events: none;
-  }
-
-  .bg-grid-pattern {
-    background-size: 40px 40px;
-    background-image: 
-      linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-  }
-
-  .bg-dots-pattern {
-    background-image: radial-gradient(rgba(0, 240, 255, 0.12) 1px, transparent 1px);
-    background-size: 24px 24px;
-  }
+/* Hide scrollbar for clean carousels */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

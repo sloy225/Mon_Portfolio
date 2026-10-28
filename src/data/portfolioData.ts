@@ -6,11 +6,11 @@ export const PERSONAL_INFO = {
   brandName: "ABD-AZIZ OUEDRAOGO",
   title: "Consultant Data Analyst & Analytics Engineer",
   subtitle: "Spécialiste Power BI, SQL & Architectures d'Agents IA (GenAI)",
-  education: "MSc Big Data & Intelligence Artificielle (Bac+5, Major 19,25/20)",
+  education: "Master Big Data & Intelligence Artificielle (Bac+5, Mention Très-bien 19,25/20)",
   experienceYears: "3 ans",
   mainClient: "SNCF Réseau (via ALCYON-E)",
   location: "Île-de-France (Neuilly-Plaisance, 93) · Mobilité Île-de-France / Télétravail",
-  availability: "Disponible immédiatement (ASAP)",
+  availability: "Disponible immédiatement",
   license: "Permis B",
   email: "ouedraogoabdoulaziz1960@gmail.com",
   phone: "+33 6 51 54 32 22",
@@ -24,8 +24,8 @@ export const PERSONAL_INFO = {
 export const KEY_METRICS: MetricItem[] = [
   {
     value: "19.25 / 20",
-    label: "Major de Promotion",
-    sublabel: "MSc Big Data & IA (Bac+5)",
+    label: "Mention Très-Bien",
+    sublabel: "Master Big Data & IA (Bac+5)",
     iconName: "GraduationCap",
     highlight: true,
   },
@@ -64,7 +64,7 @@ export const EXPERIENCES: ExperienceItem[] = [
     highlights: [
       "Modélisation décisionnelle avancée selon l'approche Kimball (schémas en étoile et en flocon) pour consolider des flux financiers et opérationnels hétérogènes.",
       "Développement, optimisation et sécurisation de plus de 20 tableaux de bord Power BI critiques avec DAX complexe, Power Query et gouvernance Row-Level Security (RLS).",
-      "Écriture et optimisation de requêtes SQL analytiques de haute performance sous environnements Cloud (GCP BigQuery et Microsoft Azure).",
+      "Écriture et optimisation de requêtes SQL analytiques de haute performance sous environnements Cloud.",
       "Automatisation complète des flux d'ingestion et de transformation via scripts Python et SQL, réduisant le temps de génération des rapports de 24h à moins d'une heure.",
       "Mise en place de protocoles stricts de contrôle qualité des données, détection d'anomalies et maintien en conditions opérationnelles (MCO).",
       "Animation d'ateliers de cadrage métier, recueil du besoin auprès des directeurs de projets et collaboration en cadre agile SAFe / Scrum."
