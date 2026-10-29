@@ -5,9 +5,10 @@ import { PERSONAL_INFO } from '../data/portfolioData';
 
 interface CallToActionProps {
   onOpenCVModal?: () => void;
+  onOpenAppointmentModal?: () => void;
 }
 
-export const CallToAction: React.FC<CallToActionProps> = ({ onOpenCVModal }) => {
+export const CallToAction: React.FC<CallToActionProps> = ({ onOpenCVModal, onOpenAppointmentModal }) => {
   return (
     <section
       id="contact"
@@ -40,14 +41,25 @@ export const CallToAction: React.FC<CallToActionProps> = ({ onOpenCVModal }) => 
 
         {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row items-center gap-4">
-          <a
-            href={`mailto:${PERSONAL_INFO.email}?subject=Proposition%20de%20Poste%20/%20Mission%20-%20Entretien%20Abdoul-Aziz`}
-            className="quantix-pill-btn px-7 py-3.5 rounded-full text-xs sm:text-sm font-semibold text-white flex items-center gap-2.5 shadow-xl group"
-          >
-            <Mail className="w-4 h-4 text-slate-300 group-hover:text-white transition-colors" />
-            <span>M'envoyer un message / Entretien</span>
-            <ArrowRight className="w-4 h-4 text-slate-400 group-hover:translate-x-1 transition-transform" />
-          </a>
+          {onOpenAppointmentModal ? (
+            <button
+              onClick={onOpenAppointmentModal}
+              className="quantix-pill-btn px-7 py-3.5 rounded-full text-xs sm:text-sm font-semibold text-white flex items-center gap-2.5 shadow-xl group"
+            >
+              <Calendar className="w-4 h-4 text-cyan-400 group-hover:text-white transition-colors" />
+              <span>Planifier un Entretien (15-30 min)</span>
+              <ArrowRight className="w-4 h-4 text-slate-400 group-hover:translate-x-1 transition-transform" />
+            </button>
+          ) : (
+            <a
+              href={`mailto:${PERSONAL_INFO.email}?subject=Proposition%20de%20Poste%20/%20Mission%20-%20Entretien%20Abdoul-Aziz`}
+              className="quantix-pill-btn px-7 py-3.5 rounded-full text-xs sm:text-sm font-semibold text-white flex items-center gap-2.5 shadow-xl group"
+            >
+              <Mail className="w-4 h-4 text-slate-300 group-hover:text-white transition-colors" />
+              <span>M'envoyer un message / Entretien</span>
+              <ArrowRight className="w-4 h-4 text-slate-400 group-hover:translate-x-1 transition-transform" />
+            </a>
+          )}
 
           {onOpenCVModal && (
             <button

@@ -5,9 +5,10 @@ import { PERSONAL_INFO } from '../data/portfolioData';
 
 interface NavbarProps {
   onOpenCVModal: () => void;
+  onOpenAppointmentModal?: () => void;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ onOpenCVModal }) => {
+export const Navbar: React.FC<NavbarProps> = ({ onOpenCVModal, onOpenAppointmentModal }) => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -22,9 +23,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenCVModal }) => {
   const navLinks = [
     { name: 'À propos', href: '#about' },
     { name: 'Expertises', href: '#services' },
+    { name: 'Lab & Démo 3D', href: '#ecosystem' },
     { name: 'Pourquoi mon profil', href: '#why-hire-me' },
-    { name: 'Réalisations & Projets', href: '#case-studies' },
-    { name: 'FAQ Recrutement', href: '#faq' },
+    { name: 'Réalisations', href: '#case-studies' },
+    { name: 'FAQ', href: '#faq' },
     { name: 'Contact', href: '#contact' },
   ];
 
@@ -58,8 +60,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenCVModal }) => {
         </div>
 
         {/* Right Nav Links & Actions */}
-        <div className="flex items-center gap-4">
-          <nav className="hidden lg:flex items-center gap-6 text-xs text-slate-300 font-normal">
+        <div className="flex items-center gap-3">
+          <nav className="hidden lg:flex items-center gap-5 text-xs text-slate-300 font-normal">
             {navLinks.map((link) => (
               <a
                 key={link.name}
@@ -71,13 +73,23 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenCVModal }) => {
             ))}
           </nav>
 
+          {/* Appointment Button */}
+          {onOpenAppointmentModal && (
+            <button
+              onClick={onOpenAppointmentModal}
+              className="hidden sm:flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-950 bg-white hover:bg-slate-200 transition-all shadow-sm"
+            >
+              <span>Entretien</span>
+            </button>
+          )}
+
           {/* CV Button */}
           <button
             onClick={onOpenCVModal}
-            className="hidden sm:flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold text-white bg-white/[0.08] hover:bg-white/[0.16] border border-white/15 transition-all shadow-sm"
+            className="hidden sm:flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold text-white bg-white/[0.08] hover:bg-white/[0.16] border border-white/15 transition-all shadow-sm"
           >
             <Download className="w-3.5 h-3.5 text-slate-300" />
-            <span>CV (PDF)</span>
+            <span>CV</span>
           </button>
 
           {/* Minimal 2-bar menu button */}
