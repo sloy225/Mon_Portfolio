@@ -3,7 +3,7 @@
 # Portfolio Web  Abdoul-Aziz OUEDRAOGO
 
 > **Consultant Data Analyst & Analytics Engineer | Spécialiste Power BI, SQL & Architectures d'Agents IA (GenAI)**  
-> *Major de Promotion MSc Big Data & IA (19,25/20) · 3 ans en prestation conseil grand compte (SNCF Réseau)*
+> *Master Big Data & IA (19,25/20) · 3 ans en prestation conseil grand compte (SNCF Réseau)*
 
 ---
 
