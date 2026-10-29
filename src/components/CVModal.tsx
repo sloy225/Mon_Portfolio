@@ -31,7 +31,7 @@ interface CVModalProps {
 }
 
 export const CVModal: React.FC<CVModalProps> = ({ isOpen, onClose }) => {
-  const [activeTab, setActiveTab] = useState<'interactive' | 'skills' | 'printable'>('interactive');
+  const [activeTab, setActiveTab] = useState<'interactive' | 'skills' | 'executive' | 'printable'>('interactive');
   const [copied, setCopied] = useState<string | null>(null);
   const [expandedExp, setExpandedExp] = useState<string | null>('sncf-alcyon');
 
@@ -80,33 +80,42 @@ export const CVModal: React.FC<CVModalProps> = ({ isOpen, onClose }) => {
           </div>
 
           {/* Tab Selector */}
-          <div className="flex items-center gap-1 p-1 rounded-xl bg-white/[0.04] border border-white/[0.08] text-xs">
+          <div className="flex flex-wrap items-center gap-1 p-1 rounded-xl bg-white/[0.04] border border-white/[0.08] text-xs">
             <button
               onClick={() => setActiveTab('interactive')}
-              className={`px-3 py-1 rounded-lg font-medium transition-all ${activeTab === 'interactive'
+              className={`px-2.5 sm:px-3 py-1 rounded-lg font-medium transition-all ${activeTab === 'interactive'
                   ? 'bg-white text-slate-950 font-semibold shadow-sm'
                   : 'text-slate-400 hover:text-white'
                 }`}
             >
-              Expériences & Parcours
+              Expériences
             </button>
             <button
               onClick={() => setActiveTab('skills')}
-              className={`px-3 py-1 rounded-lg font-medium transition-all ${activeTab === 'skills'
+              className={`px-2.5 sm:px-3 py-1 rounded-lg font-medium transition-all ${activeTab === 'skills'
                   ? 'bg-white text-slate-950 font-semibold shadow-sm'
                   : 'text-slate-400 hover:text-white'
                 }`}
             >
-              Compétences Détaillées
+              Compétences
+            </button>
+            <button
+              onClick={() => setActiveTab('executive')}
+              className={`px-2.5 sm:px-3 py-1 rounded-lg font-medium transition-all ${activeTab === 'executive'
+                  ? 'bg-white text-slate-950 font-semibold shadow-sm'
+                  : 'text-slate-400 hover:text-white'
+                }`}
+            >
+              Synthèse Décideurs (1-Pager)
             </button>
             <button
               onClick={() => setActiveTab('printable')}
-              className={`px-3 py-1 rounded-lg font-medium transition-all ${activeTab === 'printable'
+              className={`px-2.5 sm:px-3 py-1 rounded-lg font-medium transition-all ${activeTab === 'printable'
                   ? 'bg-white text-slate-950 font-semibold shadow-sm'
                   : 'text-slate-400 hover:text-white'
                 }`}
             >
-              Vue Synthétique A4
+              A4 Imprimable
             </button>
           </div>
 
@@ -377,7 +386,156 @@ export const CVModal: React.FC<CVModalProps> = ({ isOpen, onClose }) => {
             </div>
           )}
 
-          {/* TAB 3: Vue Synthétique A4 (ATS & Print Friendly) */}
+          {/* TAB 3: Synthèse Décideurs / One-Pager Recruteur */}
+          {activeTab === 'executive' && (
+            <div className="space-y-6 animate-in fade-in duration-150">
+              {/* Carte Chiffres & Enjeux */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div className="p-5 rounded-2xl bg-slate-900/60 border border-slate-800 text-center sm:text-left">
+                  <span className="text-2xl sm:text-3xl font-light text-white font-mono block mb-1">
+                    3 ans
+                  </span>
+                  <span className="text-xs font-semibold text-slate-300 block mb-1">
+                    Prestation SNCF Réseau
+                  </span>
+                  <p className="text-[11px] text-slate-400 font-normal leading-relaxed">
+                    Pilotage décisionnel du projet PEPS, plus de 50 décideurs régionaux et nationaux équipés.
+                  </p>
+                </div>
+
+                <div className="p-5 rounded-2xl bg-slate-900/60 border border-slate-800 text-center sm:text-left">
+                  <span className="text-2xl sm:text-3xl font-light text-white font-mono block mb-1">
+                    24h ➔ 48min
+                  </span>
+                  <span className="text-xs font-semibold text-slate-300 block mb-1">
+                    Optimisation de Traitement
+                  </span>
+                  <p className="text-[11px] text-slate-400 font-normal leading-relaxed">
+                    Refonte SQL et modèle en étoile : données disponibles dès 06h00 chaque matin avec 0 retard.
+                  </p>
+                </div>
+
+                <div className="p-5 rounded-2xl bg-slate-900/60 border border-slate-800 text-center sm:text-left">
+                  <span className="text-2xl sm:text-3xl font-light text-white font-mono block mb-1">
+                    19,25 / 20
+                  </span>
+                  <span className="text-xs font-semibold text-slate-300 block mb-1">
+                    Major Master Big Data & IA
+                  </span>
+                  <p className="text-[11px] text-slate-400 font-normal leading-relaxed">
+                    Mention Très Bien, maîtrise combinée des fondations BI et des architectures agents LLM.
+                  </p>
+                </div>
+              </div>
+
+              {/* Critères RH & Disponibilité */}
+              <div className="p-5 rounded-2xl bg-slate-900/40 border border-slate-800">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-slate-300 mb-3 flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-slate-400" />
+                  <span>Conditions d'Embauche & Disponibilité</span>
+                </h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+                  <div className="p-3 rounded-xl bg-white/[0.02] border border-white/[0.04]">
+                    <span className="text-slate-500 block mb-0.5 font-mono text-[11px]">Disponibilité</span>
+                    <span className="text-white font-medium">Immédiate (ASAP)</span>
+                  </div>
+                  <div className="p-3 rounded-xl bg-white/[0.02] border border-white/[0.04]">
+                    <span className="text-slate-500 block mb-0.5 font-mono text-[11px]">Types de contrat</span>
+                    <span className="text-white font-medium">CDI ou Conseil / ESN</span>
+                  </div>
+                  <div className="p-3 rounded-xl bg-white/[0.02] border border-white/[0.04]">
+                    <span className="text-slate-500 block mb-0.5 font-mono text-[11px]">Localisation</span>
+                    <span className="text-white font-medium">Île-de-France & Hybride</span>
+                  </div>
+                  <div className="p-3 rounded-xl bg-white/[0.02] border border-white/[0.04]">
+                    <span className="text-slate-500 block mb-0.5 font-mono text-[11px]">Postes ciblés</span>
+                    <span className="text-white font-medium">Data Analyst / Analytics Eng.</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Les 3 Réalisations Clés */}
+              <div className="p-5 rounded-2xl bg-slate-900/40 border border-slate-800 space-y-3">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-slate-300 mb-2 flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-slate-400" />
+                  <span>3 Réalisations Majeures Prêtes pour Démonstration</span>
+                </h3>
+
+                <div className="space-y-2 text-xs">
+                  <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/[0.04] flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div>
+                      <span className="text-white font-semibold">1. Système Décisionnel PEPS (SNCF Réseau) :</span>
+                      <p className="text-slate-400 text-[11px] mt-0.5 font-normal">
+                        20+ tableaux de bord Power BI, sécurisation granulaire Row-Level Security par direction régionale, modélisation Kimball.
+                      </p>
+                    </div>
+                    <span className="text-slate-300 font-mono text-[10px] shrink-0 bg-white/[0.05] px-2 py-1 rounded-md">Production</span>
+                  </div>
+
+                  <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/[0.04] flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div>
+                      <span className="text-white font-semibold">2. Prospection Commerciale Multi-Agents CrewAI :</span>
+                      <p className="text-slate-400 text-[11px] mt-0.5 font-normal">
+                        3 agents coordonnés (Recherche, Analyse, Rédaction), LLM local offline (Ollama DeepSeek-R1), 0€ coût d'API.
+                      </p>
+                    </div>
+                    <a
+                      href="https://github.com/sloy225/AGENT-PROSPECTION-COMMERCIAL-CREWAI"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-slate-300 hover:text-white font-mono text-[10px] shrink-0 bg-white/[0.05] hover:bg-white/[0.1] px-2 py-1 rounded-md flex items-center gap-1"
+                    >
+                      <span>Code GitHub</span>
+                      <ExternalLink className="w-2.5 h-2.5" />
+                    </a>
+                  </div>
+
+                  <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/[0.04] flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div>
+                      <span className="text-white font-semibold">3. RAG Documentaire Vectoriel Local :</span>
+                      <p className="text-slate-400 text-[11px] mt-0.5 font-normal">
+                        Moteur d'indexation vectorielle FAISS + LangChain, recherche sémantique avec citation de sources, respect strict RGPD.
+                      </p>
+                    </div>
+                    <a
+                      href="https://github.com/sloy225/rag-doc-offline"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-slate-300 hover:text-white font-mono text-[10px] shrink-0 bg-white/[0.05] hover:bg-white/[0.1] px-2 py-1 rounded-md flex items-center gap-1"
+                    >
+                      <span>Code GitHub</span>
+                      <ExternalLink className="w-2.5 h-2.5" />
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              {/* Actions directes Recruteur */}
+              <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/[0.04] flex flex-wrap items-center justify-between gap-3 text-xs">
+                <span className="text-slate-400">
+                  Besoin d'intégrer ce résumé dans votre ATS ou dossier RH ?
+                </span>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => handleCopy(`CANDIDAT : Abdoul-Aziz OUEDRAOGO (AO)\nPOSTE : Consultant Data Analyst & Analytics Engineer\nEXPÉRIENCE : 3 ans chez SNCF Réseau (Projet PEPS)\nDIPLÔME : Master Big Data & IA (Major 19,25/20)\nDISPONIBILITÉ : Immédiate (ASAP)\nLOCALISATION : Île-de-France (Hybride)\nCONTACT : ouedraogoaziz900@gmail.com | 07 43 01 02 85\nGITHUB : github.com/sloy225`, 'onepager')}
+                    className="px-3 py-1.5 rounded-xl bg-white/[0.06] hover:bg-white/[0.12] text-slate-300 border border-white/10 transition-colors flex items-center gap-1.5"
+                  >
+                    {copied === 'onepager' ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                    <span>{copied === 'onepager' ? 'Résumé copié !' : 'Copier la fiche résumé'}</span>
+                  </button>
+                  <a
+                    href={`mailto:${PERSONAL_INFO.email}?subject=Entretien%20de%20recrutement%20-%20Abdoul-Aziz%20OUEDRAOGO`}
+                    className="px-3.5 py-1.5 rounded-xl text-slate-950 bg-white hover:bg-slate-200 font-semibold transition-colors flex items-center gap-1.5"
+                  >
+                    <Mail className="w-3.5 h-3.5" />
+                    <span>Planifier un échange</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* TAB 4: Vue Synthétique A4 (ATS & Print Friendly) */}
           {activeTab === 'printable' && (
             <div className="p-8 rounded-2xl bg-white text-zinc-900 shadow-xl border border-zinc-200 animate-in fade-in duration-150 space-y-6">
 

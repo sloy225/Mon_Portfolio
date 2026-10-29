@@ -6,6 +6,7 @@ import { AboutSection } from './components/AboutSection';
 import { TestimonialQuote } from './components/TestimonialQuote';
 import { ServicesSection } from './components/ServicesSection';
 import { TechEcosystemSection } from './components/TechEcosystemSection';
+import { MethodologySection } from './components/MethodologySection';
 import { InspirationBanner } from './components/InspirationBanner';
 import { WhyQuantixBento } from './components/WhyQuantixBento';
 import { CaseStudiesCarousel } from './components/CaseStudiesCarousel';
@@ -47,8 +48,11 @@ export const App: React.FC = () => {
         {/* Domaines d'Intervention & Expertises */}
         <ServicesSection />
 
-        {/* Laboratoire Technique Live & Graphe 3D (RAG Simulator, RLS Simulator, 3D Data Topology) */}
+        {/* Laboratoire Technique Live & Graphe 3D (RAG Simulator, RLS Simulator, 3D Data Topology, Kimball, SQL, Optimisation) */}
         <TechEcosystemSection />
+
+        {/* Démarche & Rigueur Méthodologique (4 étapes Agile / SAFe) */}
+        <MethodologySection />
 
         {/* Bannière Rigueur & Vision */}
         <InspirationBanner />
